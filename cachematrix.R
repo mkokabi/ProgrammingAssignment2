@@ -35,7 +35,8 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x' 
-	# it uses the getInverse element of the passed list to get the inverse function
+	# it uses the getInverse element of the passed list to get the inversed matrix.
+	# this element itself is pointing to a function with the same name.
 	inverse <- x$getInverse()
 	
 	# if the inverse is not null then inform of using cache
@@ -45,12 +46,14 @@ cacheSolve <- function(x, ...) {
 		return(inverse)
 	}
 	
-	# if wew are here it means there was nothing in the cache. Just get the data
+	# if we are here it means there was nothing in the cache. Start with getting the data using 
+	# the get element in the passed list which is pointing to the get function.
 	data <- x$get()
-	# and use the standard solve function using data and passed arguments
+	# then use R solve function using the data (matrix) and other passed arguments in ... if any 
 	inverse <- solve(data, ...)
-	# now set the result back to the cache
+	# now set the result back to the cache. Again use the setInverse element in the x list
+	# which is pointing to setInverse function.
 	x$setInverse(inverse)
-	# and finally return it.
+	# and finally return the result.
 	inverse
 }
